@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+    <bean id="apple" class="com.stanchenko.fruits.Apple" />
+    <bean id="apricot" class="com.stanchenko.fruits.Apricot" />
+    <bean id="orange" class="com.stanchenko.fruits.Orange" />
+    <bean id="plum" class="com.stanchenko.fruits.Plum" />
+
+
+    <bean id="basket" class="com.stanchenko.Basket">
+        <constructor-arg ref="plum"/>
+        <property name="fruit" ref="apricot"/>
+    </bean>
+
+    <bean id="aopLogger" class="com.stanchenko.logger.AopLogger" />
+
+    <aop:config>
+        <aop:aspect ref="aopLogger">
+            <aop:pointcut id="methodCalled" expression="execution(* *.getFruit(..))" />
+
+            <aop:before pointcut-ref="methodCalled" method="beforeMethodCalled" />
+            <aop:after pointcut-ref="methodCalled" method="afterMethodCalled" />
+        </aop:aspect>
+    </aop:config>
+</beans>
